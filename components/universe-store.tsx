@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type ComponentProps } from "react";
 import {
   ArrowDown,
   ArrowUpRight,
@@ -13,9 +13,10 @@ import {
   Truck,
   X,
 } from "lucide-react";
-import { ScrollExpansionShowcase } from "@/components/ui/scroll-expansion-showcase";
+import { universeButtonVariants } from "@/components/ui/universe-button";
 import { UniverseIntro } from "@/components/ui/universe-intro";
 import { siteAsset } from "@/lib/site-path";
+import { cn } from "@/lib/utils";
 import { firstName } from "@/lib/visitor";
 
 const phoneDigits = "5562993721548";
@@ -42,6 +43,16 @@ function Brand({ compact = false }: { compact?: boolean }) {
 
 function WhatsAppLink({ children, className = "", message }: { children: React.ReactNode; className?: string; message?: string }) {
   return <a className={className} href={whatsapp(message)} {...external}>{children}</a>;
+}
+
+function UniverseActionLink({ children, className = "", reveal = true, ...props }: ComponentProps<"a"> & { reveal?: boolean }) {
+  return (
+    <a className={cn(universeButtonVariants(), className)} data-reveal={reveal ? "action" : undefined} {...props}>{children}</a>
+  );
+}
+
+function WhatsAppButton({ children, className = "", message, reveal = true }: { children: React.ReactNode; className?: string; message?: string; reveal?: boolean }) {
+  return <UniverseActionLink className={className} href={whatsapp(message)} reveal={reveal} {...external}>{children}</UniverseActionLink>;
 }
 
 export default function UniverseStore() {
@@ -179,7 +190,7 @@ export default function UniverseStore() {
             <a key={id} href={`#${id}`} onClick={() => setMenuOpen(false)}><span>0{index + 1}</span>{label}</a>
           ))}
         </nav>
-        <WhatsAppLink className="button button-light">Conversar no WhatsApp <MessageCircle size={18} /></WhatsAppLink>
+        <WhatsAppButton className="button button-light" reveal={false}>Conversar no WhatsApp <MessageCircle size={18} /></WhatsAppButton>
       </div>
 
       <main id="conteudo">
@@ -190,7 +201,7 @@ export default function UniverseStore() {
               <h1 id="hero-title">Tecnologia que<br /><em>encontra você.</em></h1>
               <p className="hero-lead">Uma curadoria guiada por conversa, contexto e escolha. Consulte a Universe para descobrir o dispositivo certo para o seu momento.</p>
               <div className="hero-actions">
-                <WhatsAppLink className="button button-dark" message={visitorFirstName ? `Olá! Meu nome é ${visitorName} e quero conversar sobre as opções da Universe Store Gyn.` : undefined}>{visitorFirstName ? `${visitorFirstName}, fale com a Universe` : "Fale com a Universe"} <ArrowUpRight size={18} /></WhatsAppLink>
+                <WhatsAppButton className="button button-dark" message={visitorFirstName ? `Olá! Meu nome é ${visitorName} e quero conversar sobre as opções da Universe Store Gyn.` : undefined}>{visitorFirstName ? `${visitorFirstName}, fale com a Universe` : "Fale com a Universe"} <ArrowUpRight size={18} /></WhatsAppButton>
                 <a className="text-link" href="#destaque">Ver experiência <ArrowDown size={16} /></a>
               </div>
             </div>
@@ -217,7 +228,6 @@ export default function UniverseStore() {
             <div><p className="eyebrow eyebrow-dark">Momento Universe / 2026</p><h2 id="cinema-title">Quatro acabamentos.<br />Uma presença.</h2></div>
             <p>Uma experiência visual preservada e reinterpretada para a Universe. Conteúdo conceitual; consulte a loja para informações comerciais.</p>
           </div>
-          <ScrollExpansionShowcase />
         </section>
 
         <section className="editorial shell" id="editorial" aria-labelledby="editorial-title">
@@ -253,7 +263,7 @@ export default function UniverseStore() {
             <h2 id="store-title">Uma parada no seu caminho.<br /><em>Um lugar para escolher sem pressa.</em></h2>
             <address>Av. T-9, Qd. H-20, Lt. 22e23 Nº 185<br />Setor Marista · Goiânia — GO<br />74150-300</address>
             <a className="phone-link" href="tel:+5562993721548">(62) 99372-1548</a>
-            <div className="store-actions"><a className="button button-dark" href={mapsUrl} {...external}>Traçar rota <MapPin size={18} /></a><WhatsAppLink className="text-link">Falar com a equipe <ArrowUpRight size={16} /></WhatsAppLink></div>
+            <div className="store-actions"><UniverseActionLink className="button button-dark" href={mapsUrl} {...external}>Traçar rota <MapPin size={18} /></UniverseActionLink><WhatsAppLink className="text-link">Falar com a equipe <ArrowUpRight size={16} /></WhatsAppLink></div>
           </div>
         </section>
 
@@ -263,7 +273,7 @@ export default function UniverseStore() {
             <Brand />
             <p>Seu próximo dispositivo não precisa começar em uma vitrine.</p>
             <h2>{visitorFirstName ? `${visitorFirstName}, a próxima escolha começa aqui.` : "A próxima escolha começa aqui."}</h2>
-            <WhatsAppLink className="button button-light" message={visitorFirstName ? `Olá! Meu nome é ${visitorName}. Quero descobrir a opção certa para mim na Universe Store Gyn.` : undefined}>Falar com a Universe <MessageCircle size={19} /></WhatsAppLink>
+            <WhatsAppButton className="button button-light" message={visitorFirstName ? `Olá! Meu nome é ${visitorName}. Quero descobrir a opção certa para mim na Universe Store Gyn.` : undefined}>Falar com a Universe <MessageCircle size={19} /></WhatsAppButton>
           </div>
         </section>
       </main>

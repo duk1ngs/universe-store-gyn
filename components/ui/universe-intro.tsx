@@ -2,8 +2,8 @@
 
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { ArrowRight } from "lucide-react";
+import { UniverseButton } from "@/components/ui/universe-button";
 import { isValidVisitorName, normalizeVisitorName, VISITOR_NAME_KEY } from "@/lib/visitor";
-import { siteAsset } from "@/lib/site-path";
 
 export const INTRO_COMPLETE_EVENT = "universe:intro-complete";
 type IntroPhase = "hidden" | "visible" | "leaving";
@@ -92,7 +92,6 @@ export function UniverseIntro({ onComplete }: { onComplete: (name: string) => vo
   return (
     <div className={`universe-intro${phase === "leaving" ? " is-leaving" : ""}`} role="dialog" aria-modal="true" aria-label="Introdução da Universe Store">
       <div className="intro-orbit" aria-hidden="true"><span /></div>
-      <img className="intro-product" src={siteAsset("/media/iphone-showcase-transparent-v2.png")} alt="" width="1672" height="941" />
       <div className="intro-surface intro-surface-left" aria-hidden="true" />
       <div className="intro-surface intro-surface-right" aria-hidden="true" />
       <div className="intro-lockup">
@@ -102,12 +101,12 @@ export function UniverseIntro({ onComplete }: { onComplete: (name: string) => vo
           <label htmlFor="visitor-name">Como podemos chamar você?</label>
           <div className="intro-field">
             <input ref={inputRef} id="visitor-name" name="visitor-name" value={name} onChange={(event) => { setName(event.target.value); if (error) setError(""); }} autoComplete="given-name" inputMode="text" maxLength={40} placeholder="Seu nome" aria-invalid={Boolean(error)} aria-describedby={error ? "visitor-name-error" : undefined} />
-            <button type="submit">Entrar <ArrowRight size={18} /></button>
+            <UniverseButton className="intro-submit" size="compact" type="submit">Entrar <ArrowRight size={18} /></UniverseButton>
           </div>
           <p className="intro-greeting" aria-live="polite">{normalizeVisitorName(name) ? `Olá, ${normalizeVisitorName(name)}.` : "Uma entrada preparada para você."}</p>
           {error && <p className="intro-error" id="visitor-name-error" role="alert">{error}</p>}
         </form>
-        <button className="intro-skip-name" type="button" onClick={() => finishRef.current("")}>Continuar sem nome</button>
+        <UniverseButton className="intro-skip-name" size="compact" type="button" onClick={() => finishRef.current("")}>Continuar sem nome</UniverseButton>
       </div>
     </div>
   );
