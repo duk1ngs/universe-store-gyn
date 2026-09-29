@@ -168,11 +168,9 @@ export default function UniverseStore() {
                 <a className="text-link" href="#ecossistema">Explorar o ecossistema <ArrowDown size={16} /></a>
               </div>
             </div>
-            <div className="hero-art" data-reveal>
+            <div className="hero-art" data-reveal aria-hidden="true">
               <span className="hero-orbit" aria-hidden="true" />
               <span className="hero-watermark" aria-hidden="true">U</span>
-              <img src={siteAsset("/brand/iphone-18-colors.png")} alt="Composição conceitual de quatro acabamentos de iPhone" width="692" height="696" fetchPriority="high" />
-              <p>Seleção 2026<br /><span>Consulte disponibilidade</span></p>
             </div>
           </div>
           <div className="hero-index" aria-hidden="true"><span>UN / 01</span><span>Arraste para descobrir</span></div>
