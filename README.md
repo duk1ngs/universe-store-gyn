@@ -1,4 +1,14 @@
-# vinext-starter
+# Universe Store Gyn
+
+Experiência digital premium da Universe Store Gyn, construída em React/Vinext com narrativa editorial, motion responsivo e atendimento local como principal conversão.
+
+## Demo
+
+**[Abrir demonstração publicada](https://universe-store-gyn.eduardo-classich123.chatgpt.site/)**
+
+> A demonstração é hospedada no ambiente Sites e pode solicitar autenticação do proprietário.
+
+## Desenvolvimento
 
 A clean full-stack starter running on [vinext](https://github.com/cloudflare/vinext), with optional Cloudflare D1 and Drizzle support.
 
