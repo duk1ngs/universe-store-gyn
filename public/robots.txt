@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://universe-store-gyn.wintry-goose-2397.chatgpt.site/sitemap.xml
