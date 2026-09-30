@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState, type ComponentProps } from "react";
+import Image from "next/image";
 import {
   ArrowDown,
   ArrowUpRight,
@@ -8,12 +9,14 @@ import {
   Menu,
   MessageCircle,
   PackageCheck,
+  Plus,
   ShoppingBag,
   Star,
   Truck,
   X,
 } from "lucide-react";
 import { universeButtonVariants } from "@/components/ui/universe-button";
+import { IphoneColorOrbit } from "@/components/ui/iphone-color-orbit";
 import { UniverseIntro } from "@/components/ui/universe-intro";
 import { siteAsset } from "@/lib/site-path";
 import { cn } from "@/lib/utils";
@@ -41,8 +44,8 @@ function Brand({ compact = false }: { compact?: boolean }) {
   );
 }
 
-function WhatsAppLink({ children, className = "", message }: { children: React.ReactNode; className?: string; message?: string }) {
-  return <a className={className} href={whatsapp(message)} {...external}>{children}</a>;
+function WhatsAppLink({ children, className = "", message, ...props }: ComponentProps<"a"> & { message?: string }) {
+  return <a className={className} href={whatsapp(message)} {...external} {...props}>{children}</a>;
 }
 
 function UniverseActionLink({ children, className = "", reveal = true, ...props }: ComponentProps<"a"> & { reveal?: boolean }) {
@@ -53,6 +56,54 @@ function UniverseActionLink({ children, className = "", reveal = true, ...props 
 
 function WhatsAppButton({ children, className = "", message, reveal = true }: { children: React.ReactNode; className?: string; message?: string; reveal?: boolean }) {
   return <UniverseActionLink className={className} href={whatsapp(message)} reveal={reveal} {...external}>{children}</UniverseActionLink>;
+}
+
+function ProductEditorial() {
+  const productMessage = "Olá! Quero conhecer as possibilidades do iPhone 18 Pro e confirmar os modelos disponíveis.";
+  return (
+    <section className="product-editorial" id="destaque" aria-labelledby="product-editorial-title">
+      <div className="shell product-editorial-grid">
+        <article className="product-feature-card" data-reveal>
+          <div className="product-feature-media">
+            <Image src={siteAsset("/media/iphone-showcase-transparent-v2.png")} alt="Quatro estudos de acabamento do iPhone 18 Pro" width={1672} height={941} loading="lazy" unoptimized />
+            <WhatsAppLink className="product-plus" message={productMessage} aria-label="Conhecer possibilidades do iPhone 18 Pro"><Plus /></WhatsAppLink>
+          </div>
+          <div className="product-feature-copy" data-reveal="heading">
+            <p className="product-kicker">Destaque da seleção</p>
+            <h2 id="product-editorial-title">iPhone 18<br />Pro</h2>
+            <p>Quatro acabamentos em uma composição limpa e sofisticada. Consulte a equipe para confirmar modelo, lançamento e disponibilidade.</p>
+            <WhatsAppButton className="product-pill" message={productMessage}>Conhecer possibilidades <ArrowUpRight size={16} /></WhatsAppButton>
+          </div>
+        </article>
+
+        <article className="product-story-card" id="editorial" data-reveal>
+          <div className="product-story-media">
+            <Image src={siteAsset("/brand/apple-2026-editorial.jpg")} alt="Criativo Universe Store com uma composição de dispositivos Apple 2026" width={1638} height={2047} loading="lazy" unoptimized />
+            <WhatsAppLink className="product-plus" message="Olá! Quero conversar sobre os lançamentos Apple apresentados pela Universe." aria-label="Conversar sobre lançamentos Apple"><Plus /></WhatsAppLink>
+          </div>
+          <div className="product-story-copy">
+            <p className="product-kicker">Curadoria Universe</p>
+            <h3>Novidades, com contexto.</h3>
+            <p>Uma leitura visual dos próximos lançamentos. A equipe ajuda a separar conceito, anúncio e disponibilidade real.</p>
+            <WhatsAppButton className="product-pill" message="Olá! Quero conversar sobre os lançamentos Apple apresentados pela Universe.">Conhecer possibilidades <ArrowUpRight size={16} /></WhatsAppButton>
+          </div>
+        </article>
+
+        <article className="product-story-card" data-reveal>
+          <div className="product-story-media product-story-media-fold">
+            <Image src={siteAsset("/brand/foldable-editorial.jpg")} alt="Estudo conceitual de um dispositivo dobrável em diferentes ângulos" width={720} height={1280} loading="lazy" unoptimized />
+            <WhatsAppLink className="product-plus" message="Olá! Quero conhecer os conceitos e aparelhos selecionados pela Universe." aria-label="Conhecer conceitos selecionados pela Universe"><Plus /></WhatsAppLink>
+          </div>
+          <div className="product-story-copy">
+            <p className="product-kicker">Exploração conceitual</p>
+            <h3>Ideias abrem caminhos.</h3>
+            <p>Conceitos apresentados como inspiração, sem promessa comercial. Para o que já existe, consulte a curadoria da loja.</p>
+            <WhatsAppButton className="product-pill" message="Olá! Quero conhecer os conceitos e aparelhos selecionados pela Universe.">Conhecer possibilidades <ArrowUpRight size={16} /></WhatsAppButton>
+          </div>
+        </article>
+      </div>
+    </section>
+  );
 }
 
 export default function UniverseStore() {
@@ -175,8 +226,8 @@ export default function UniverseStore() {
         <div className="shell header-inner">
           <a className="header-brand" href="#inicio"><Brand compact /></a>
           <nav className="desktop-nav" aria-label="Navegação principal">
-            <a href="#destaque">Destaque</a><a href="#editorial">Editorial</a>
-            <a href="#reputacao">Reputação</a><a href="#loja">A loja</a>
+            <a href="#destaque">Seleção</a><a href="#reputacao">Reputação</a>
+            <a href="#loja">A loja</a><a href="#cores">Cores</a>
           </nav>
           <WhatsAppLink className="header-cta">Falar com a Universe <ArrowUpRight size={16} /></WhatsAppLink>
           <button ref={menuButtonRef} className="menu-button" type="button" aria-label="Abrir menu" aria-expanded={menuOpen} onClick={() => setMenuOpen(true)}><Menu /></button>
@@ -186,7 +237,7 @@ export default function UniverseStore() {
       <div ref={menuRef} className={`mobile-menu${menuOpen ? " is-open" : ""}`} role="dialog" aria-modal="true" aria-label="Menu principal" aria-hidden={!menuOpen}>
         <div className="mobile-menu-head"><Brand compact /><button ref={closeButtonRef} type="button" aria-label="Fechar menu" onClick={() => { setMenuOpen(false); menuButtonRef.current?.focus(); }}><X /></button></div>
         <nav aria-label="Navegação móvel">
-          {[["destaque","Destaque"],["editorial","Editorial"],["reputacao","Reputação"],["loja","A loja"]].map(([id,label], index) => (
+          {[["destaque","Seleção"],["reputacao","Reputação"],["loja","A loja"],["cores","Cores" ]].map(([id,label], index) => (
             <a key={id} href={`#${id}`} onClick={() => setMenuOpen(false)}><span>0{index + 1}</span>{label}</a>
           ))}
         </nav>
@@ -195,7 +246,7 @@ export default function UniverseStore() {
 
       <main id="conteudo">
         <section className="hero shell" id="inicio" aria-labelledby="hero-title">
-          <div className="hero-grid">
+          <div className="hero-grid hero-grid-centered">
             <div className="hero-copy" data-reveal="heading">
               <p className="eyebrow"><span>Goiânia · Setor Marista</span><span>4,9 / 5</span></p>
               <h1 id="hero-title">Tecnologia que<br /><em>encontra você.</em></h1>
@@ -204,11 +255,6 @@ export default function UniverseStore() {
                 <WhatsAppButton className="button button-dark" message={visitorFirstName ? `Olá! Meu nome é ${visitorName} e quero conversar sobre as opções da Universe Store Gyn.` : undefined}>{visitorFirstName ? `${visitorFirstName}, fale com a Universe` : "Fale com a Universe"} <ArrowUpRight size={18} /></WhatsAppButton>
                 <a className="text-link" href="#destaque">Ver experiência <ArrowDown size={16} /></a>
               </div>
-            </div>
-            <div className="hero-art" data-reveal>
-              <span className="hero-orbit" aria-hidden="true" />
-              <img className="hero-devices" src={siteAsset("/media/iphone-showcase-transparent-v2.png")} alt="Composição conceitual com quatro acabamentos de iPhone" width="1672" height="941" fetchPriority="high" />
-              <p className="hero-art-note">Quatro acabamentos<br /><span>Estudo visual</span></p>
             </div>
           </div>
           <div className="hero-index" aria-hidden="true"><span>UN / 01</span><span>Arraste para descobrir</span></div>
@@ -223,23 +269,7 @@ export default function UniverseStore() {
           </div>
         </section>
 
-        <section className="cinema" id="destaque" aria-labelledby="cinema-title">
-          <div className="cinema-head shell" data-reveal="heading">
-            <div><p className="eyebrow eyebrow-dark">Momento Universe / 2026</p><h2 id="cinema-title">Quatro acabamentos.<br />Uma presença.</h2></div>
-            <p>Uma experiência visual preservada e reinterpretada para a Universe. Conteúdo conceitual; consulte a loja para informações comerciais.</p>
-          </div>
-        </section>
-
-        <section className="editorial shell" id="editorial" aria-labelledby="editorial-title">
-          <article className="editorial-primary" data-reveal>
-            <div className="editorial-copy"><p className="eyebrow">Universe editorial</p><h2 id="editorial-title">O que vem a seguir, visto por outro ângulo.</h2><p>Exploração editorial dos lançamentos de 2026. A presença no site não representa oferta ou disponibilidade na loja.</p></div>
-            <img src={siteAsset("/brand/apple-2026-editorial.jpg")} alt="Criativo Universe Store com composição de dispositivos Apple 2026" width="1638" height="2047" loading="lazy" />
-          </article>
-          <article className="editorial-concept" data-reveal>
-            <img src={siteAsset("/brand/iphone-duo-concept.jpg")} alt="Estudo conceitual Universe Store de um iPhone dobrável chamado iPhone Duo" width="1440" height="1802" loading="lazy" />
-            <div><span>CONCEITO / 02</span><h3>Ideias também abrem caminhos.</h3><p>Uma peça conceitual da marca, apresentada como exploração — não como oferta comercial.</p></div>
-          </article>
-        </section>
+        <ProductEditorial />
 
         <section className="reputation" id="reputacao" aria-labelledby="reputation-title">
           <div className="shell">
@@ -267,15 +297,7 @@ export default function UniverseStore() {
           </div>
         </section>
 
-        <section className="final-cta">
-          <div className="final-orbit" aria-hidden="true" />
-          <div className="shell" data-reveal="heading">
-            <Brand />
-            <p>Seu próximo dispositivo não precisa começar em uma vitrine.</p>
-            <h2>{visitorFirstName ? `${visitorFirstName}, a próxima escolha começa aqui.` : "A próxima escolha começa aqui."}</h2>
-            <WhatsAppButton className="button button-light" message={visitorFirstName ? `Olá! Meu nome é ${visitorName}. Quero descobrir a opção certa para mim na Universe Store Gyn.` : undefined}>Falar com a Universe <MessageCircle size={19} /></WhatsAppButton>
-          </div>
-        </section>
+        <IphoneColorOrbit visitorName={visitorName} />
       </main>
 
       <footer className="site-footer">

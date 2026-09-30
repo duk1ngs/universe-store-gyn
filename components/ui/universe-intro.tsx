@@ -2,6 +2,7 @@
 
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { ArrowRight } from "lucide-react";
+import BlackHole from "@/components/ui/black-hole";
 import { UniverseButton } from "@/components/ui/universe-button";
 import { isValidVisitorName, normalizeVisitorName, VISITOR_NAME_KEY } from "@/lib/visitor";
 
@@ -91,7 +92,7 @@ export function UniverseIntro({ onComplete }: { onComplete: (name: string) => vo
 
   return (
     <div className={`universe-intro${phase === "leaving" ? " is-leaving" : ""}`} role="dialog" aria-modal="true" aria-label="Introdução da Universe Store">
-      <div className="intro-orbit" aria-hidden="true"><span /></div>
+      <BlackHole className="intro-black-hole" />
       <div className="intro-surface intro-surface-left" aria-hidden="true" />
       <div className="intro-surface intro-surface-right" aria-hidden="true" />
       <div className="intro-lockup">
