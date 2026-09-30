@@ -267,3 +267,136 @@ html[data-intro-active="true"] .site-header{opacity:0;transform:translateY(-10px
   .product-feature-media img,.product-story-media img{transition:none}
   .intro-black-hole{opacity:.76}
 }
+
+/* Universe 4.0 — product-led monochrome environment */
+:root{--paper:#050506;--ink:#f4f4f5;--muted:#a1a1a6;--line:#ffffff24;--gold:#b8b8bc;--gold-bright:#e8e8eb}
+html,body{background:#050506;color:#f4f4f5}
+body{isolation:isolate}
+::selection{background:#e8e8eb;color:#050506}
+.universe-ambient-field{position:fixed;z-index:0;inset:0;display:block;width:100%;height:100dvh;pointer-events:none;opacity:.62}
+.ambient-orbit-layer{z-index:0;opacity:.12;filter:grayscale(1)}
+.ambient-circle{border-color:#ffffff1c;background:radial-gradient(circle at 42% 38%,#ffffff0b,transparent 62%);box-shadow:none}
+.ambient-track{border-color:#ffffff2a}
+.ambient-track i{background:#fff;box-shadow:0 0 0 5px #ffffff16}
+main{background:transparent}
+
+.site-header{background:rgba(4,4,5,.78);border-bottom:1px solid #ffffff1c;color:#f5f5f6}
+.header-brand .brand{color:#fff}
+.desktop-nav a::after,.header-cta::after{background:#fff}
+.desktop-nav a:hover,.header-cta:hover{color:#fff}
+.menu-button{color:#fff}
+.mobile-menu{background:#050506}
+.mobile-menu nav span{color:#a9a9af}
+
+.iphone-hero{--hero-lift:0px;--hero-scale:1;--hero-turn:0deg;--hero-dim:1;min-height:calc(100svh - 76px);padding:clamp(44px,5vw,72px) 0 22px;background:rgba(0,0,0,.08)}
+.iphone-hero::after{content:"";position:absolute;z-index:-1;inset:auto 0 0;height:25%;background:linear-gradient(180deg,transparent,#050506 92%);pointer-events:none}
+.section-anchor{position:absolute;top:0}
+.iphone-hero-intro{position:relative;z-index:5;display:grid;grid-template-columns:minmax(0,1fr) minmax(190px,.55fr);align-items:end;gap:5vw}
+.iphone-hero-intro .eyebrow{grid-column:1/-1;margin-bottom:8px;color:#9b9ba1}
+.iphone-hero-intro .eyebrow::before{background:#77777c}
+.iphone-hero-intro .eyebrow span{margin-inline:-8px;color:#56565a}
+.iphone-hero-intro h1{max-width:1000px;margin:0;font-size:clamp(5.3rem,9vw,9.2rem);font-weight:500;line-height:.82;letter-spacing:-.09em;text-wrap:balance;transform:translate3d(0,var(--hero-lift),0);transition:transform .12s linear}
+.hero-title-period{color:#85858a}
+.iphone-hero-intro>p:last-child{max-width:285px;margin:0 0 8px;color:#c2c2c6;font-size:clamp(.82rem,1.1vw,1rem);line-height:1.6}
+.color-closing-ambient{z-index:-2;background:radial-gradient(ellipse at 50% 52%,color-mix(in srgb,var(--active-glow) 10%,transparent) 0,transparent 43%);opacity:var(--hero-dim);transition:opacity .3s}
+.color-closing-ambient-next{z-index:-1;background:radial-gradient(ellipse at 50% 52%,color-mix(in srgb,var(--next-glow) 13%,transparent) 0,transparent 43%);opacity:0;transition:opacity .95s .9s ease}
+.iphone-hero[data-state="crossing"] .color-closing-ambient-next{opacity:var(--hero-dim)}
+.color-stage{width:min(1320px,calc(100% - 50px));height:clamp(520px,52vw,720px);margin:-24px auto 0;transform:translate3d(0,var(--hero-lift),0) scale(var(--hero-scale));transition:transform .12s linear}
+.color-stage::before{content:"";position:absolute;left:50%;top:48%;width:min(760px,66vw);height:min(760px,66vw);border:1px solid #ffffff0b;border-radius:50%;transform:translate(-50%,-50%) scaleY(.6);pointer-events:none}
+.color-stage-orbit{left:5%;right:5%;top:14%;height:72%;border-color:color-mix(in srgb,var(--active-glow) 27%,transparent);box-shadow:none;transform:rotate(calc(-7deg + var(--hero-turn))) scaleY(.48)}
+.color-stage-orbit::after{border-color:#ffffff0b}
+.color-device{width:clamp(260px,24vw,365px);height:clamp(520px,49vw,720px);transform:translate(-50%,-48%);mix-blend-mode:normal;filter:none;clip-path:inset(6.1% 10.7% 8% 10.7% round 14% / 6%)}
+.color-device img{mix-blend-mode:screen;filter:none}
+.color-state-copy{left:auto;right:7%;top:52%}
+.color-state-copy span{color:#9a9aa0}
+.color-state-copy strong{color:#f5f5f6}
+.color-closing-controls{position:relative;z-index:7;margin-top:-30px;padding-block:18px;border-top:1px solid #ffffff25}
+.color-swatch{background:rgba(6,6,7,.6);border-color:#ffffff25}
+.color-swatch:hover,.color-swatch[aria-pressed="true"]{background:#171719;border-color:#ffffffa1}
+.color-cta{min-height:50px}
+.iphone-hero-foot{display:flex;justify-content:space-between;padding-top:18px;border-top:1px solid #ffffff16;color:#85858a;font-size:.6rem;font-weight:700;letter-spacing:.13em}
+
+.service-rail{z-index:2;background:rgba(5,5,6,.85);border-color:#ffffff18;color:#f3f3f4}
+.service-grid>div{border-color:#ffffff1c}
+.service-grid small{color:#9b9ba1}
+.service-grid .rating svg{color:#efeff1}
+.product-editorial{background:linear-gradient(180deg,#050506 0%,rgba(5,5,6,.82) 12%,rgba(5,5,6,.76) 88%,#050506 100%)}
+.product-editorial::before{background:none}
+.product-feature-card,.product-story-card{background:#0c0c0e;border-color:#ffffff13;box-shadow:none}
+.product-feature-media,.product-story-media{background:#020203}
+.product-plus{background:#f2f2f3}
+.reputation{background:linear-gradient(180deg,#050506,rgba(10,10,12,.78) 45%,#050506)}
+.reputation-head{border-color:#ffffff20}
+.stars,.reviews blockquote>span{color:#f3f3f4}
+.reviews blockquote{border-color:#ffffff1a}
+.reviews blockquote>p{color:#e8e8e9}
+.reviews footer small,.score small{color:#9a9aa0}
+.store-section{position:relative;z-index:2;color:#f4f4f5}
+.store-map{background:#101113;border:1px solid #ffffff27;border-radius:2px;box-shadow:none}
+.map-grid{background-image:linear-gradient(#ffffff0d 1px,transparent 1px),linear-gradient(90deg,#ffffff0d 1px,transparent 1px)}
+.map-route{background:#1c1d20;border-color:#ffffff20;box-shadow:0 0 0 5px #ffffff08}
+.map-pin{background:#f1f1f2;color:#111}
+.map-label{color:#a3a3a9}
+.map-axis{color:#99999e}
+.store-copy .eyebrow{color:#b8b8bd}
+.store-copy address{color:#b4b4b9}
+.phone-link{border-color:#ffffff55}
+.store-actions .button-dark{background:#f4f4f5;border-color:#f4f4f5;color:#09090a}
+.store-actions .button-dark:hover{background:#d3d3d6}
+.store-actions .text-link{color:#f3f3f4}
+.site-footer{background:#030304;border-color:#ffffff1d}
+.footer-statement{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:end;padding-block:clamp(80px,10vw,145px);border-bottom:1px solid #ffffff24}
+.footer-statement>span{grid-column:1/-1;color:#9c9ca1;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase}
+.footer-statement p{margin:0;font-size:clamp(3.6rem,8vw,8.5rem);font-weight:450;line-height:.86;letter-spacing:-.075em}
+.footer-statement-link{display:flex;align-items:center;gap:14px;padding-bottom:12px;border-bottom:1px solid #ffffff7a;font-size:.76rem;font-weight:700}
+.footer-grid{padding-top:65px}
+.floating-whatsapp{border:1px solid #ffffff26;background:#f1f1f2;color:#0a0a0b;box-shadow:0 12px 30px #0006}
+.universe-intro.is-leaving{background:transparent}
+.intro-lockup .brand-word{background:none;color:#fff}
+.intro-lockup .brand-store{color:#d3d3d6}
+.intro-lockup .intro-kicker{color:#a8a8ac}
+.universe-intro.is-leaving .intro-black-hole{opacity:0;transform:scale(1.25);transition:opacity .62s ease,transform .7s var(--ease)}
+.universe-intro.is-leaving .intro-surface{opacity:0;transition:opacity .62s ease}
+
+@media(max-width:1050px){
+  .iphone-hero-intro{grid-template-columns:1fr auto}
+  .iphone-hero-intro h1{font-size:clamp(5.2rem,11vw,8rem)}
+  .color-stage{height:620px}
+  .color-device{height:600px}
+  .color-state-copy{right:3%}
+  .service-grid>div:nth-child(-n+2){border-color:#ffffff1c}
+}
+@media(max-width:700px){
+  .universe-ambient-field{opacity:.46}
+  .ambient-orbit-layer{opacity:.08}
+  .site-header{height:68px}
+  .iphone-hero{min-height:calc(100svh - 68px);padding-top:58px;padding-bottom:24px}
+  .iphone-hero-intro{display:block}
+  .iphone-hero-intro .eyebrow{font-size:.58rem}
+  .iphone-hero-intro h1{max-width:340px;margin-top:24px;font-size:clamp(3.9rem,18vw,5.8rem);line-height:.82}
+  .iphone-hero-intro>p:last-child{max-width:290px;margin-top:18px;color:#aaaab0;font-size:.78rem}
+  .color-stage{width:100%;height:570px;margin-top:0}
+  .color-stage::before{width:380px;height:380px}
+  .color-stage-orbit{left:-24%;right:-24%;top:18%;height:62%}
+  .color-device{width:230px;height:465px;transform:translate(-50%,-46%)}
+  .color-state-copy{left:18px;right:auto;bottom:0;top:auto}
+  .color-state-copy strong{font-size:1.25rem}
+  .color-orb-runner{top:58%}
+  .color-closing-controls{margin-top:10px;align-items:stretch}
+  .color-swatches{gap:8px}
+  .color-swatch{min-height:42px;padding:5px 10px 5px 6px}
+  .color-swatch>span{width:27px;height:27px}
+  .color-cta{width:100%}
+  .iphone-hero-foot{margin-top:18px;font-size:.48rem}
+  .product-editorial{padding-block:75px}
+  .product-story-media{height:360px}
+  .store-map{height:400px}
+  .footer-statement{grid-template-columns:1fr;gap:25px;padding-block:82px}
+  .footer-statement-link{justify-self:start}
+  .footer-grid{padding-top:50px}
+}
+@media(prefers-reduced-motion:reduce){
+  .color-stage,.iphone-hero-intro h1{transform:none!important;transition:none}
+  .universe-ambient-field{opacity:.34}
+  .ambient-orbit-layer{display:none}
+}

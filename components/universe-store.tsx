@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useRef, useState, type ComponentProps } from "react";
 import Image from "next/image";
 import {
-  ArrowDown,
   ArrowUpRight,
   MapPin,
   Menu,
@@ -18,9 +17,9 @@ import {
 import { universeButtonVariants } from "@/components/ui/universe-button";
 import { IphoneColorOrbit } from "@/components/ui/iphone-color-orbit";
 import { UniverseIntro } from "@/components/ui/universe-intro";
+import { UniverseAmbient } from "@/components/ui/universe-ambient";
 import { siteAsset } from "@/lib/site-path";
 import { cn } from "@/lib/utils";
-import { firstName } from "@/lib/visitor";
 
 const phoneDigits = "5562993721548";
 const whatsapp = (message = "Olá! Quero conhecer as opções da Universe Store Gyn.") =>
@@ -113,7 +112,6 @@ export default function UniverseStore() {
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const orbitLayerRef = useRef<HTMLDivElement>(null);
-  const visitorFirstName = firstName(visitorName);
   const handleIntroComplete = useCallback((name: string) => setVisitorName(name), []);
 
   useEffect(() => {
@@ -217,6 +215,7 @@ export default function UniverseStore() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
       <UniverseIntro onComplete={handleIntroComplete} />
+      <UniverseAmbient />
       <div className="ambient-orbit-layer" ref={orbitLayerRef} aria-hidden="true">
         <div className="ambient-orbit-system"><span className="ambient-circle" /><span className="ambient-track"><i /></span></div>
       </div>
@@ -226,8 +225,8 @@ export default function UniverseStore() {
         <div className="shell header-inner">
           <a className="header-brand" href="#inicio"><Brand compact /></a>
           <nav className="desktop-nav" aria-label="Navegação principal">
-            <a href="#destaque">Seleção</a><a href="#reputacao">Reputação</a>
-            <a href="#loja">A loja</a><a href="#cores">Cores</a>
+            <a href="#inicio">iPhone 18 Pro</a><a href="#destaque">Seleção</a>
+            <a href="#reputacao">Reputação</a><a href="#loja">A loja</a>
           </nav>
           <WhatsAppLink className="header-cta">Falar com a Universe <ArrowUpRight size={16} /></WhatsAppLink>
           <button ref={menuButtonRef} className="menu-button" type="button" aria-label="Abrir menu" aria-expanded={menuOpen} onClick={() => setMenuOpen(true)}><Menu /></button>
@@ -237,7 +236,7 @@ export default function UniverseStore() {
       <div ref={menuRef} className={`mobile-menu${menuOpen ? " is-open" : ""}`} role="dialog" aria-modal="true" aria-label="Menu principal" aria-hidden={!menuOpen}>
         <div className="mobile-menu-head"><Brand compact /><button ref={closeButtonRef} type="button" aria-label="Fechar menu" onClick={() => { setMenuOpen(false); menuButtonRef.current?.focus(); }}><X /></button></div>
         <nav aria-label="Navegação móvel">
-          {[["destaque","Seleção"],["reputacao","Reputação"],["loja","A loja"],["cores","Cores" ]].map(([id,label], index) => (
+          {[["inicio","iPhone 18 Pro"],["destaque","Seleção"],["reputacao","Reputação"],["loja","A loja" ]].map(([id,label], index) => (
             <a key={id} href={`#${id}`} onClick={() => setMenuOpen(false)}><span>0{index + 1}</span>{label}</a>
           ))}
         </nav>
@@ -245,20 +244,7 @@ export default function UniverseStore() {
       </div>
 
       <main id="conteudo">
-        <section className="hero shell" id="inicio" aria-labelledby="hero-title">
-          <div className="hero-grid hero-grid-centered">
-            <div className="hero-copy" data-reveal="heading">
-              <p className="eyebrow"><span>Goiânia · Setor Marista</span><span>4,9 / 5</span></p>
-              <h1 id="hero-title">Tecnologia que<br /><em>encontra você.</em></h1>
-              <p className="hero-lead">Uma curadoria guiada por conversa, contexto e escolha. Consulte a Universe para descobrir o dispositivo certo para o seu momento.</p>
-              <div className="hero-actions">
-                <WhatsAppButton className="button button-dark" message={visitorFirstName ? `Olá! Meu nome é ${visitorName} e quero conversar sobre as opções da Universe Store Gyn.` : undefined}>{visitorFirstName ? `${visitorFirstName}, fale com a Universe` : "Fale com a Universe"} <ArrowUpRight size={18} /></WhatsAppButton>
-                <a className="text-link" href="#destaque">Ver experiência <ArrowDown size={16} /></a>
-              </div>
-            </div>
-          </div>
-          <div className="hero-index" aria-hidden="true"><span>UN / 01</span><span>Arraste para descobrir</span></div>
-        </section>
+        <IphoneColorOrbit visitorName={visitorName} />
 
         <section className="service-rail" aria-label="Serviços informados">
           <div className="shell service-grid">
@@ -297,10 +283,10 @@ export default function UniverseStore() {
           </div>
         </section>
 
-        <IphoneColorOrbit visitorName={visitorName} />
       </main>
 
       <footer className="site-footer">
+        <div className="shell footer-statement" data-reveal="heading"><span>Universe Store Gyn</span><p>Tecnologia que<br />encontra você.</p><WhatsAppLink className="footer-statement-link">Converse com a equipe <ArrowUpRight size={18} /></WhatsAppLink></div>
         <div className="shell footer-grid">
           <div><Brand compact /><p>Tecnologia com presença local.</p></div>
           <div><strong>Visite</strong><address>Setor Marista<br />Goiânia — GO</address></div>

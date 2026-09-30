@@ -14,7 +14,11 @@ const variants = [
   { name: "Azul celeste", short: "Azul", asset: "/media/iphone-showcase-blue.webp", color: "#96b8d5", glow: "#b5d8f5" },
 ] as const;
 
-type ClosingStyle = CSSProperties & { "--active-color": string; "--active-glow": string };
+type ClosingStyle = CSSProperties & {
+  "--active-color": string;
+  "--active-glow": string;
+  "--next-glow": string;
+};
 
 export function IphoneColorOrbit({ visitorName = "" }: { visitorName?: string }) {
   const [current, setCurrent] = useState(0);
@@ -23,6 +27,7 @@ export function IphoneColorOrbit({ visitorName = "" }: { visitorName?: string })
   const [cycle, setCycle] = useState(0);
   const [reducedMotion, setReducedMotion] = useState(false);
   const [inView, setInView] = useState(false);
+  const [introComplete, setIntroComplete] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
   const commitTimer = useRef<number | null>(null);
 
@@ -59,6 +64,13 @@ export function IphoneColorOrbit({ visitorName = "" }: { visitorName?: string })
   }, []);
 
   useEffect(() => {
+    const complete = () => setIntroComplete(true);
+    if (document.documentElement.dataset.introActive !== "true") complete();
+    window.addEventListener("universe:intro-complete", complete);
+    return () => window.removeEventListener("universe:intro-complete", complete);
+  }, []);
+
+  useEffect(() => {
     const section = sectionRef.current;
     if (!section || !("IntersectionObserver" in window)) {
       setInView(true);
@@ -70,30 +82,60 @@ export function IphoneColorOrbit({ visitorName = "" }: { visitorName?: string })
   }, []);
 
   useEffect(() => {
-    if (reducedMotion || crossing || !inView) return;
+    if (reducedMotion || crossing || !inView || !introComplete) return;
     const timer = window.setTimeout(() => transitionTo((current + 1) % variants.length), 1500);
     return () => window.clearTimeout(timer);
-  }, [crossing, current, inView, reducedMotion, transitionTo]);
+  }, [crossing, current, inView, introComplete, reducedMotion, transitionTo]);
 
   useEffect(() => clearCommit, [clearCommit]);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const progress = media.matches ? 0 : Math.max(0, Math.min(1, window.scrollY / Math.max(section.offsetHeight * 0.75, 1)));
+      section.style.setProperty("--hero-scroll", progress.toFixed(3));
+      section.style.setProperty("--hero-lift", `${(-42 * progress).toFixed(1)}px`);
+      section.style.setProperty("--hero-scale", (1 - 0.09 * progress).toFixed(3));
+      section.style.setProperty("--hero-turn", `${(-8 * progress).toFixed(1)}deg`);
+      section.style.setProperty("--hero-dim", (1 - 0.62 * progress).toFixed(3));
+    };
+    const schedule = () => { if (!frame) frame = window.requestAnimationFrame(update); };
+    update();
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule, { passive: true });
+    media.addEventListener("change", schedule);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+      media.removeEventListener("change", schedule);
+    };
+  }, []);
 
   const activeVariant = variants[current];
   const incomingVariant = variants[next];
   const style: ClosingStyle = {
-    "--active-color": crossing ? incomingVariant.color : activeVariant.color,
-    "--active-glow": crossing ? incomingVariant.glow : activeVariant.glow,
+    "--active-color": activeVariant.color,
+    "--active-glow": activeVariant.glow,
+    "--next-glow": incomingVariant.glow,
   };
   const firstName = visitorName.trim().split(/\s+/)[0] || "";
   const message = `${firstName ? `Olá! Meu nome é ${visitorName}. ` : "Olá! "}Quero conhecer o iPhone 18 Pro no acabamento ${activeVariant.name}.`;
   const whatsappHref = `https://wa.me/5562993721548?text=${encodeURIComponent(message)}`;
 
   return (
-    <section ref={sectionRef} className="color-closing" id="cores" style={style} aria-labelledby="color-closing-title">
+    <section ref={sectionRef} className="color-closing iphone-hero" id="inicio" style={style} aria-labelledby="color-closing-title" data-state={crossing ? "crossing" : "idle"}>
+      <span id="cores" className="section-anchor" aria-hidden="true" />
       <div className="color-closing-ambient" aria-hidden="true" />
-      <div className="shell color-closing-head" data-reveal="heading">
-        <p className="eyebrow eyebrow-dark">Escolha por acabamento</p>
-        <h2 id="color-closing-title">A cor encontra o iPhone.</h2>
-        <p>Explore quatro estudos visuais do iPhone 18 Pro. Para modelo, lançamento e disponibilidade, consulte a equipe.</p>
+      <div className="color-closing-ambient color-closing-ambient-next" aria-hidden="true" />
+      <div className="shell iphone-hero-intro" data-reveal="heading">
+        <p className="eyebrow eyebrow-dark">Universe Store Gyn <span>·</span> Seleção 2026</p>
+        <h1 id="color-closing-title">iPhone 18 Pro<span className="hero-title-period">.</span></h1>
+        <p>Quatro acabamentos. Uma escolha feita com contexto.</p>
       </div>
 
       <div className="color-stage" data-state={crossing ? "crossing" : "idle"}>
@@ -131,6 +173,7 @@ export function IphoneColorOrbit({ visitorName = "" }: { visitorName?: string })
           Quero conhecer em {activeVariant.short} <ArrowUpRight size={18} />
         </a>
       </div>
+      <div className="shell iphone-hero-foot" aria-hidden="true"><span>UN / 01 — ESCOLHA O ACABAMENTO</span><span>DESLIZE PARA EXPLORAR ↓</span></div>
     </section>
   );
 }

@@ -22,14 +22,18 @@ const fragmentShaderSource = `
     vec2 uv = (gl_FragCoord.xy - 0.5 * u_resolution.xy) / min(u_resolution.x, u_resolution.y);
     float distanceFromCenter = length(uv);
     float angle = atan(uv.y, uv.x);
-    float pulse = sin(angle * 3.0 - u_time * 0.28) * 0.009;
-    float halo = ring(uv, 0.255 + pulse, 0.055);
-    float innerHalo = ring(uv, 0.218, 0.022) * 0.42;
-    float falloff = smoothstep(0.7, 0.08, distanceFromCenter);
-    float voidMask = 1.0 - smoothstep(0.13, 0.23, distanceFromCenter);
-    float light = (halo * 0.18 + innerHalo * 0.11) * falloff;
-    vec3 color = vec3(0.006 + light);
-    color *= 1.0 - voidMask * 0.98;
+    float pulse = sin(angle * 2.0 - u_time * 0.19) * 0.006;
+    vec2 diskUv = vec2(uv.x, uv.y * 1.7);
+    float disk = ring(diskUv, 0.39 + pulse, 0.085);
+    float diskLight = (0.55 + 0.45 * sin(angle * 2.0 + u_time * 0.22)) * disk;
+    float halo = ring(uv, 0.255 + pulse, 0.052);
+    float lens = ring(uv, 0.297, 0.043) * 0.42;
+    float innerHalo = ring(uv, 0.218, 0.019) * 0.31;
+    float falloff = smoothstep(0.85, 0.07, distanceFromCenter);
+    float voidMask = 1.0 - smoothstep(0.14, 0.22, distanceFromCenter);
+    float light = (diskLight * 0.07 + halo * 0.17 + lens * 0.08 + innerHalo * 0.11) * falloff;
+    vec3 color = vec3(0.004 + light);
+    color *= 1.0 - voidMask * 0.99;
     gl_FragColor = vec4(color, 1.0);
   }
 `;

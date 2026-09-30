@@ -1,39 +1,33 @@
 # Design QA — Universe Store Gyn
 
-## Evidence
+## Current release review
 
-- Source of truth: `C:/Users/Eduardo/AppData/Local/Temp/codex-clipboard-56c27221-0c05-4156-919c-a76e15224c94.png`
-- Motion reference: `C:/Users/Eduardo/Downloads/WhatsApp Video 2026-09-29 at 15.57.54.mp4`
-- Implementation: `http://127.0.0.1:5173/`
-- Browser evidence: Codex in-app browser, Chromium surface, DPR 1.
-- Full-view checks: 1280 × 720 and 1024 × 832 CSS pixels.
-- Focused responsive check: 390 × 844 CSS pixels.
-- Comparison evidence: side-by-side 1024 × 832 capture created during QA from the supplied reference and the live implementation. The temporary comparison route and copied reference asset were removed after verification.
+- Source of truth: the existing project and its approved iPhone 18 Pro color-orbit interaction. The previously supplied visual reference was used for direction, not pixel matching.
+- Local implementation: `http://127.0.0.1:5173/`.
+- Browser review: Codex in-app Chromium at 1440 × 900 and 390 × 844 CSS pixels, plus a fresh-origin intro check.
+- Product-first hero, monochrome intro, color transitions, section sequence, WhatsApp links, logo contrast, and footer reviewed visually.
 
-## Scope verified
+## Findings and resolutions
 
-- Product-free, centered hero and centered intro.
-- Minimal black-hole treatment in the intro.
-- Dark modular product cards using the project's own supplied assets.
-- Shared outlined CTA and plus-control language with restrained fade reveals.
-- Interactive iPhone 18 Pro color orbit with stable device geometry, manual selection, automatic in-view progression, contextual CTA and WhatsApp message.
-- Responsive stacking, mobile navigation, no horizontal overflow, and reduced-motion code paths.
+1. The former white hero competed with the approved product experience. The interactive iPhone scene is now the first section after the intro.
+2. White section surfaces broke the new direction. Product, reputation, store, map, and footer surfaces were recomposed on a black/graphite system with white typography and controlled separators.
+3. The supplied iPhone renders contain a black rectangular image plane. A tight device silhouette crop and screen blend remove that plane while preserving the approved assets and the color-wipe interaction.
+4. The mobile color caption touched the device. The mobile stage was lengthened so the device and caption have distinct space.
+5. Automatic color cycling waits for the intro to complete; the intro's black-hole moment remains separate from the interactive product scene.
 
-## Comparison history
+## Verification
 
-1. P2 — The reference-style feature card stacked too early at 1024 px. Fixed by moving the single-column breakpoint to 700 px.
-2. P2 — Variant renders showed a black rectangular image plane. Fixed with controlled screen blending on the device layers.
-3. P2 — Feature-card scale and media crop differed from the reference. Refined the grid width, title scale, card proportions, media height, and responsive typography.
-4. Rechecked the corrected desktop composition and mobile layout. No P0, P1, or P2 discrepancies remained.
+- Intro: black-hole field, monochrome lockup, name/skip controls, and soft exit into the hero.
+- Hero: color orb, progressive iPhone wipe, changing caption and contextual WhatsApp CTA. The ambient glow follows the incoming color without replacing the black background.
+- Scroll: product scale/lift/orbit response; the selected color influence fades as the hero exits. Existing intersection-based reveals continue through the later sections.
+- Mobile: recomposed title/product/controls, no horizontal document overflow, legible service rail and remaining sections.
+- Reduced motion: CSS disables transforms/reveals and the ambient canvas stops animating; color selection remains available through the component's reduced-motion path.
+- Performance: ambient WebGL field uses low-power context, DPR cap and 20 FPS cap; black-hole canvas is mounted only during intro; both canvases pause when the page is hidden.
+- Browser console: no errors in the reviewed local session.
+- TypeScript, ESLint, production build, and `git diff --check`: passed.
 
-## Interaction and technical checks
+## Editorial safeguards
 
-- Color selector: selecting **Cereja** set `aria-pressed="true"`, updated the label and changed the CTA to “Quero conhecer em Cereja”.
-- Automatic progression: verified after a clean reload; motion pauses outside the viewport and complex cycling is disabled for reduced motion.
-- Browser console: no errors during desktop and mobile checks.
-- Mobile overflow: `clientWidth` matched `scrollWidth`.
-- Intentional differences: project-provided product/editorial photography replaces the reference imagery; the sticky site header remains part of the real page composition.
-
-## Final result
-
-passed
+- Product availability is not asserted as fact; the copy asks visitors to confirm model, launch, and stock with the store.
+- Reviews and local store details remain as supplied in the existing project.
+- Product imagery remains the project's existing asset set; no synthetic replacement was introduced in this change.
