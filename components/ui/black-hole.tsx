@@ -15,7 +15,11 @@ const fragmentShaderSource = `
 
   float ring(vec2 point, float radius, float width) {
     float distanceFromCenter = length(point);
-    return smoothstep(width, 0.0, abs(distanceFromCenter - radius));
+    return 1.0 - smoothstep(0.0, width, abs(distanceFromCenter - radius));
+  }
+
+  float hash(vec2 p) {
+    return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
   }
 
   void main() {
@@ -24,17 +28,29 @@ const fragmentShaderSource = `
     float angle = atan(uv.y, uv.x);
     float pulse = sin(angle * 2.0 - u_time * 0.19) * 0.006;
     vec2 diskUv = vec2(uv.x, uv.y * 1.7);
-    float disk = ring(diskUv, 0.39 + pulse, 0.085);
-    float diskLight = (0.55 + 0.45 * sin(angle * 2.0 + u_time * 0.22)) * disk;
+    float disk = ring(diskUv, 0.39 + pulse, 0.095);
+    float diskLight = (0.68 + 0.32 * sin(angle * 2.0 + u_time * 0.22)) * disk;
     float halo = ring(uv, 0.255 + pulse, 0.052);
     float lens = ring(uv, 0.297, 0.043) * 0.42;
     float innerHalo = ring(uv, 0.218, 0.019) * 0.31;
-    float falloff = smoothstep(0.85, 0.07, distanceFromCenter);
+    float dustArc = ring(diskUv, 0.47 + pulse * 0.6, 0.045) * (0.38 + 0.62 * sin(angle * 11.0 - u_time * 0.27) * sin(angle * 5.0 + u_time * 0.16));
+    float falloff = 1.0 - smoothstep(0.07, 0.85, distanceFromCenter);
     float voidMask = 1.0 - smoothstep(0.14, 0.22, distanceFromCenter);
-    float light = (diskLight * 0.07 + halo * 0.17 + lens * 0.08 + innerHalo * 0.11) * falloff;
-    vec3 color = vec3(0.004 + light);
-    color *= 1.0 - voidMask * 0.99;
-    gl_FragColor = vec4(color, 1.0);
+    float light = (diskLight * 0.11 + halo * 0.19 + lens * 0.09 + innerHalo * 0.11 + max(dustArc, 0.0) * 0.035) * falloff;
+    float haze = (1.0 - smoothstep(0.32, 1.15, distanceFromCenter)) * 0.014;
+
+    vec2 starGrid = uv * 47.0;
+    vec2 starCell = floor(starGrid);
+    float starSeed = hash(starCell);
+    vec2 starOffset = vec2(hash(starCell + 17.0), hash(starCell + 31.0)) - 0.5;
+    float star = step(0.985, starSeed) * (1.0 - smoothstep(0.015, 0.085, length(fract(starGrid) - 0.5 - starOffset * 0.45)));
+    star *= 0.13 + 0.045 * sin(u_time * 0.5 + starSeed * 19.0);
+
+    vec3 color = vec3(0.012 + haze + light + star);
+    color *= 1.0 - voidMask * 0.995;
+    float visibleLight = smoothstep(0.004, 0.085, haze + light + star);
+    float alpha = clamp(voidMask + visibleLight * 0.92, 0.0, 1.0);
+    gl_FragColor = vec4(color, alpha);
   }
 `;
 
@@ -55,7 +71,7 @@ export default function BlackHole({ className }: { className?: string }) {
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    const gl = canvas?.getContext("webgl", { alpha: false, antialias: false, powerPreference: "low-power" });
+    const gl = canvas?.getContext("webgl", { alpha: true, antialias: false, premultipliedAlpha: false, powerPreference: "low-power" });
     if (!canvas || !gl) return;
 
     const vertexShader = compileShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
@@ -82,9 +98,10 @@ export default function BlackHole({ className }: { className?: string }) {
     const startedAt = performance.now();
     let frame = 0;
     let running = false;
+    let lastRender = 0;
 
     const resize = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 1.35);
+      const dpr = Math.min(window.devicePixelRatio || 1, 1);
       const width = Math.max(1, Math.round(canvas.clientWidth * dpr));
       const height = Math.max(1, Math.round(canvas.clientHeight * dpr));
       if (canvas.width === width && canvas.height === height) return;
@@ -94,16 +111,19 @@ export default function BlackHole({ className }: { className?: string }) {
       gl.uniform2f(resolution, width, height);
     };
 
-    const render = (now: number) => {
-      gl.uniform1f(time, reducedMotion.matches ? 0 : (now - startedAt) / 1000);
-      gl.drawArrays(gl.TRIANGLES, 0, 6);
+    const render = (now: number, force = false) => {
+      if (force || now - lastRender >= 33) {
+        lastRender = now;
+        gl.uniform1f(time, reducedMotion.matches ? 0 : (now - startedAt) / 1000);
+        gl.drawArrays(gl.TRIANGLES, 0, 6);
+      }
       if (running) frame = requestAnimationFrame(render);
     };
 
     const sync = () => {
       cancelAnimationFrame(frame);
       running = !reducedMotion.matches && !document.hidden;
-      render(performance.now());
+      render(performance.now(), true);
     };
 
     const observer = "ResizeObserver" in window ? new ResizeObserver(resize) : null;

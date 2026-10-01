@@ -18,6 +18,7 @@ import { universeButtonVariants } from "@/components/ui/universe-button";
 import { IphoneColorOrbit } from "@/components/ui/iphone-color-orbit";
 import { UniverseIntro } from "@/components/ui/universe-intro";
 import { UniverseAmbient } from "@/components/ui/universe-ambient";
+import { ShinyButtonContent, shinyButtonClassName } from "@/components/ui/shiny-button";
 import { siteAsset } from "@/lib/site-path";
 import { cn } from "@/lib/utils";
 
@@ -49,7 +50,9 @@ function WhatsAppLink({ children, className = "", message, ...props }: Component
 
 function UniverseActionLink({ children, className = "", reveal = true, ...props }: ComponentProps<"a"> & { reveal?: boolean }) {
   return (
-    <a className={cn(universeButtonVariants(), className)} data-reveal={reveal ? "action" : undefined} {...props}>{children}</a>
+    <a className={shinyButtonClassName(cn(universeButtonVariants(), className))} data-reveal={reveal ? "action" : undefined} {...props}>
+      <ShinyButtonContent>{children}</ShinyButtonContent>
+    </a>
   );
 }
 
@@ -295,7 +298,7 @@ export default function UniverseStore() {
         </div>
         <div className="shell footer-bottom"><span>© 2026 Universe Store Gyn</span><span>Compras na loja · Retirada · Entrega</span></div>
       </footer>
-      <WhatsAppLink className="floating-whatsapp" message="Olá! Vim pelo site da Universe Store Gyn e quero atendimento."><MessageCircle /><span>WhatsApp</span></WhatsAppLink>
+      <WhatsAppLink className={shinyButtonClassName("floating-whatsapp")} message="Olá! Vim pelo site da Universe Store Gyn e quero atendimento."><ShinyButtonContent><MessageCircle /><span>WhatsApp</span></ShinyButtonContent></WhatsAppLink>
     </>
   );
 }

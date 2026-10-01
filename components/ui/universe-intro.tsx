@@ -3,6 +3,7 @@
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { ArrowRight } from "lucide-react";
 import BlackHole from "@/components/ui/black-hole";
+import { UniverseAmbient } from "@/components/ui/universe-ambient";
 import { UniverseButton } from "@/components/ui/universe-button";
 import { isValidVisitorName, normalizeVisitorName, VISITOR_NAME_KEY } from "@/lib/visitor";
 
@@ -92,9 +93,13 @@ export function UniverseIntro({ onComplete }: { onComplete: (name: string) => vo
 
   return (
     <div className={`universe-intro${phase === "leaving" ? " is-leaving" : ""}`} role="dialog" aria-modal="true" aria-label="Introdução da Universe Store">
+      <UniverseAmbient className="intro-fluid-field" />
       <BlackHole className="intro-black-hole" />
       <div className="intro-surface intro-surface-left" aria-hidden="true" />
       <div className="intro-surface intro-surface-right" aria-hidden="true" />
+      <div className="intro-space-orbit" aria-hidden="true" />
+      <div className="intro-cosmic-dust" aria-hidden="true" />
+      <div className="intro-cosmos-meta" aria-hidden="true"><span>UNIVERSE / 00</span><span>CAMPO ORBITAL ATIVO</span></div>
       <div className="intro-lockup">
         <div className="intro-brand" aria-label="Universe Store"><span className="brand-word">UNIVERSE</span><span className="brand-store">STORE</span></div>
         <p className="intro-kicker">Sua experiência começa pela conversa.</p>
