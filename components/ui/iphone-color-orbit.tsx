@@ -15,7 +15,7 @@ const variants = [
   { name: "Azul celeste", short: "Azul", asset: "/media/iphone-showcase-blue.webp", color: "#96b8d5" },
 ] as const;
 
-const TRANSITION_MS = 2400;
+const TRANSITION_MS = 2300;
 
 type ColorTransition = { from: number; to: number; id: number };
 
@@ -146,7 +146,7 @@ export function IphoneColorOrbit({ visitorName = "" }: { visitorName?: string })
 
   useEffect(() => {
     if (reducedMotion || transition || !inView || !introComplete) return;
-    const delay = Math.max(6000, manualPauseUntilRef.current - Date.now());
+    const delay = Math.max(7000, manualPauseUntilRef.current - Date.now());
     const timer = window.setTimeout(() => {
       if (transitionRef.current || Date.now() < manualPauseUntilRef.current) return;
       transitionTo((currentRef.current + 1) % variants.length);
