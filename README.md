@@ -6,7 +6,11 @@ Experiência digital premium da Universe Store Gyn, construída em React/Vinext 
 
 **[Abrir demonstração publicada](https://universe-store-gyn.eduardo-classich123.chatgpt.site/)**
 
+**[Abrir espelho no GitHub Pages](https://duk1ngs.github.io/universe-store-gyn/)**
+
 > A demonstração é hospedada no ambiente Sites e pode solicitar autenticação do proprietário.
+
+O workflow `.github/workflows/deploy-pages.yml` também gera uma exportação estática e publica o espelho no GitHub Pages a cada envio para `main`.
 
 ## Desenvolvimento
 

@@ -1,5 +1,13 @@
 import type { Metadata } from "next";
+import localFont from "next/font/local";
 import "./globals.css";
+
+const manrope = localFont({
+  src: "../public/fonts/manrope.woff2",
+  display: "swap",
+  variable: "--font-manrope",
+  weight: "200 800",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://universe-store-gyn.eduardo-classich123.chatgpt.site"),
@@ -20,7 +28,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="pt-BR">
-      <body>{children}</body>
+      <body className={manrope.variable}>{children}</body>
     </html>
   );
 }
