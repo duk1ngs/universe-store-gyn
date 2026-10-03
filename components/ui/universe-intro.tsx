@@ -106,8 +106,8 @@ export function UniverseIntro({ onComplete }: { onComplete: (name: string) => vo
         <form className="intro-form" onSubmit={submit} noValidate>
           <label htmlFor="visitor-name">Como podemos chamar você?</label>
           <div className="intro-field">
-            <input ref={inputRef} id="visitor-name" name="visitor-name" value={name} onChange={(event) => { setName(event.target.value); if (error) setError(""); }} autoComplete="given-name" inputMode="text" maxLength={40} placeholder="Seu nome" aria-invalid={Boolean(error)} aria-describedby={error ? "visitor-name-error" : undefined} />
-            <UniverseButton className="intro-submit" size="compact" type="submit">Entrar <ArrowRight size={18} /></UniverseButton>
+            <input ref={inputRef} id="visitor-name" name="visitor-name" value={name} onChange={(event) => { setName(event.target.value); if (error) setError(""); }} autoComplete="given-name" inputMode="text" maxLength={40} placeholder="Digite seu nome" aria-invalid={Boolean(error)} aria-describedby={error ? "visitor-name-error" : undefined} />
+            <UniverseButton className="intro-submit" size="compact" type="submit">Continuar <ArrowRight size={18} /></UniverseButton>
           </div>
           <p className="intro-greeting" aria-live="polite">{normalizeVisitorName(name) ? `Olá, ${normalizeVisitorName(name)}.` : "Uma entrada preparada para você."}</p>
           {error && <p className="intro-error" id="visitor-name-error" role="alert">{error}</p>}
